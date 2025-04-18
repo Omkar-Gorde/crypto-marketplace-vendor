@@ -1,73 +1,69 @@
-# Welcome to your Lovable project
 
-## Project info
+# Ethereum Marketplace DApp
 
-**URL**: https://lovable.dev/projects/e99a427c-42dd-43cb-a063-9c80324ee351
+A decentralized marketplace built on Ethereum that allows users to list items for sale and purchase them directly with cryptocurrency.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Blockchain Transactions**: Every purchase is securely processed on the Ethereum blockchain
+- **Smart Contract Powered**: Automatic ownership transfer upon purchase
+- **User-Friendly Interface**: Modern React UI for browsing, selling, and purchasing items
+- **MetaMask Integration**: Connect your Ethereum wallet seamlessly
 
-**Use Lovable**
+## Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e99a427c-42dd-43cb-a063-9c80324ee351) and start prompting.
+- **Smart Contracts**: Solidity
+- **Blockchain Development**: Truffle & Ganache
+- **Frontend**: React.js, TypeScript
+- **Blockchain Interaction**: Web3.js
+- **UI Components**: shadcn/ui with TailwindCSS
+- **Styling**: TailwindCSS
 
-Changes made via Lovable will be committed automatically to this repo.
+## Setup & Installation
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js
+- MetaMask browser extension
+- Ganache (for local blockchain development)
+- Truffle (for smart contract deployment)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Local Development
 
-Follow these steps:
+1. Clone this repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start Ganache (personal blockchain)
+4. Deploy contracts to the blockchain:
+   ```
+   truffle migrate --reset
+   ```
+5. Start the React development server:
+   ```
+   npm run dev
+   ```
+6. Connect MetaMask to your local Ganache blockchain (usually at http://localhost:7545)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Smart Contract Structure
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+The marketplace is powered by a smart contract that handles:
+- Listing items for sale
+- Tracking ownership
+- Processing purchases
+- Transferring funds
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Usage
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+1. Connect your wallet using the "Connect Wallet" button
+2. Browse items on the marketplace
+3. List your own items for sale using the "Sell Item" page
+4. Purchase items directly through the platform
 
-**Edit a file directly in GitHub**
+## Future Enhancements
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/e99a427c-42dd-43cb-a063-9c80324ee351) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Item categories and search functionality
+- User ratings and reviews
+- Support for NFT trading
+- Multiple payment token options

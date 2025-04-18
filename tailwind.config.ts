@@ -28,6 +28,13 @@ export default {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
+				crypto: {
+					purple: '#8B5CF6',
+					indigo: '#6366F1',
+					blue: '#3B82F6',
+					dark: '#1A1F2C',
+					light: '#F8FAFC'
+				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
