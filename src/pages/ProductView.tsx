@@ -5,36 +5,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useWalletConnection } from "@/utils/web3";
 import { Product } from "@/types/marketplace";
+import { getProduct, purchaseProduct } from "@/utils/marketplace";
 import Navbar from "@/components/Navbar";
 import ProductDetail from "@/components/ProductDetail";
-
-// Mock data for initial development - will be replaced with actual blockchain data
-const MOCK_PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: "Vintage Guitar",
-    description: "A beautiful vintage electric guitar in excellent condition. This classic instrument has been well maintained and produces a warm, rich tone that's perfect for blues and rock. Includes original case and accessories.",
-    price: 0.5,
-    owner: "0x123456789abcdef123456789abcdef123456789a",
-    purchased: false
-  },
-  {
-    id: 2,
-    name: "Gaming Laptop",
-    description: "High-performance gaming laptop with RTX graphics, 16GB RAM, 1TB SSD, and a 15.6\" 144Hz display. Perfect for both gaming and content creation, this machine can handle any modern game at high settings.",
-    price: 0.75,
-    owner: "0x123456789abcdef123456789abcdef123456789a",
-    purchased: true
-  },
-  {
-    id: 3,
-    name: "Designer Watch",
-    description: "Luxury designer watch with automatic movement. Features a sapphire crystal face, stainless steel case, and genuine leather band. Water resistant to 100m and includes a 2-year warranty.",
-    price: 0.3,
-    owner: "0xabcdef123456789abcdef123456789abcdef1234",
-    purchased: false
-  }
-];
 
 const ProductView = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,11 +22,20 @@ const ProductView = () => {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        // In a real implementation, this would fetch data from the blockchain
         const productId = parseInt(id || "0");
-        const foundProduct = MOCK_PRODUCTS.find(p => p.id === productId) || null;
+        if (isNaN(productId) || productId <= 0) {
+          toast({
+            title: "Invalid product ID",
+            description: "The product ID is not valid",
+            variant: "destructive"
+          });
+          navigate("/");
+          return;
+        }
         
-        if (!foundProduct) {
+        const fetchedProduct = await getProduct(productId);
+        
+        if (!fetchedProduct) {
           toast({
             title: "Product not found",
             description: "The product you're looking for doesn't exist",
@@ -63,7 +45,7 @@ const ProductView = () => {
           return;
         }
         
-        setProduct(foundProduct);
+        setProduct(fetchedProduct);
       } catch (error) {
         console.error("Error fetching product:", error);
         toast({
@@ -90,32 +72,31 @@ const ProductView = () => {
       return;
     }
     
+    if (!product) {
+      return;
+    }
+    
     try {
       setPurchaseLoading(true);
       
-      // In a real implementation, this would send a transaction to the blockchain
       toast({
         title: "Purchase initiated",
         description: "Please confirm the transaction in your wallet",
       });
       
-      // Mock successful purchase
-      setTimeout(() => {
-        if (product) {
-          setProduct({
-            ...product,
-            purchased: true,
-            owner: account
-          });
-        }
-        
-        toast({
-          title: "Purchase successful!",
-          description: "You are now the owner of this item",
-          variant: "default",
-        });
-        setPurchaseLoading(false);
-      }, 2000);
+      await purchaseProduct(productId, product.price, account);
+      
+      setProduct({
+        ...product,
+        purchased: true,
+        owner: account
+      });
+      
+      toast({
+        title: "Purchase successful!",
+        description: "You are now the owner of this item",
+        variant: "default",
+      });
     } catch (error) {
       console.error("Error purchasing product:", error);
       toast({
@@ -123,6 +104,7 @@ const ProductView = () => {
         description: "There was an error processing your purchase",
         variant: "destructive",
       });
+    } finally {
       setPurchaseLoading(false);
     }
   };

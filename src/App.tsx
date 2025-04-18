@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import SellItem from "./pages/SellItem";
 import ProductView from "./pages/ProductView";
 import NotFound from "./pages/NotFound";
+import MarketplaceInitializer from "./components/MarketplaceInitializer";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <MarketplaceInitializer />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/sell" element={<SellItem />} />

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useWalletConnection } from "@/utils/web3";
+import { createProduct } from "@/utils/marketplace";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -55,23 +56,21 @@ const SellItem = () => {
     setIsSubmitting(true);
     
     try {
-      // In a real implementation, this would send a transaction to the blockchain
       toast({
         title: "Listing initiated",
         description: "Please confirm the transaction in your wallet",
       });
       
-      // Mock successful listing
-      setTimeout(() => {
-        toast({
-          title: "Item listed successfully!",
-          description: "Your item is now available on the marketplace",
-          variant: "default",
-        });
-        
-        // Redirect to home page
-        navigate("/");
-      }, 2000);
+      await createProduct(name, description, priceValue, account);
+      
+      toast({
+        title: "Item listed successfully!",
+        description: "Your item is now available on the marketplace",
+        variant: "default",
+      });
+      
+      // Redirect to home page
+      navigate("/");
     } catch (error) {
       console.error("Error listing product:", error);
       toast({
