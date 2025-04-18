@@ -20,7 +20,7 @@ const ProductCard = ({ product, onPurchase, connected, isOwner }: ProductCardPro
           <div className="flex justify-between items-start">
             <CardTitle className="text-lg">{product.name}</CardTitle>
             {product.purchased && (
-              <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">Sold</Badge>
+              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Sold</Badge>
             )}
           </div>
         </CardHeader>

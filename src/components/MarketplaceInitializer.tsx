@@ -15,7 +15,7 @@ const MarketplaceInitializer = () => {
       if (initialized) return;
       
       try {
-        if (!window.ethereum) {
+        if (typeof window.ethereum === 'undefined') {
           console.warn('No Ethereum provider detected');
           return;
         }

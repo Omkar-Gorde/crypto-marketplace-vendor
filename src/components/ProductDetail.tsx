@@ -22,7 +22,7 @@ const ProductDetail = ({ product, onPurchase, loading = false }: ProductDetailPr
         <div className="flex justify-between items-start">
           <CardTitle className="text-2xl font-bold">{product.name}</CardTitle>
           {product.purchased && (
-            <Badge variant="secondary" className="bg-white text-purple-700">Sold</Badge>
+            <Badge className="bg-white text-purple-700">Sold</Badge>
           )}
         </div>
       </CardHeader>
@@ -44,7 +44,7 @@ const ProductDetail = ({ product, onPurchase, loading = false }: ProductDetailPr
               <p className="mt-1 text-gray-900 break-all">
                 {isOwner ? (
                   <span className="flex items-center gap-1">
-                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">You</Badge>
+                    <Badge className="bg-green-50 text-green-700 border-green-200">You</Badge>
                     {product.owner.substring(0, 10)}...
                   </span>
                 ) : (

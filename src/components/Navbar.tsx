@@ -1,6 +1,8 @@
 
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useWalletConnection } from "@/utils/web3";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { account, connect, isConnecting } = useWalletConnection();
@@ -11,10 +13,10 @@ const Navbar = () => {
         <div className="text-white font-bold text-xl">Ethereum Marketplace</div>
         <div className="flex items-center space-x-4">
           <Button variant="secondary" className="flex-1" asChild>
-            <a href="/">Browse</a>
+            <Link to="/">Browse</Link>
           </Button>
           <Button variant="secondary" className="flex-1" asChild>
-            <a href="/sell">Sell Item</a>
+            <Link to="/sell">Sell Item</Link>
           </Button>
           {account ? (
             <Button variant="outline" className="bg-white text-purple-700 border-white hover:bg-purple-50">
