@@ -1,94 +1,77 @@
 
+import React from 'react';
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/types/marketplace";
-import { formatDistanceToNow } from "date-fns";
-import { useWalletConnection } from "@/utils/web3";
+import { formatDistance, parseISO } from "date-fns";
 
-type ProductDetailProps = {
+interface ProductDetailProps {
   product: Product;
-  onPurchase: (id: number) => void;
-  loading?: boolean;
-};
+  isOwner: boolean;
+  isLoading?: boolean;
+  onPurchase?: () => void;
+  purchaseInProgress?: boolean;
+}
 
-const ProductDetail = ({ product, onPurchase, loading = false }: ProductDetailProps) => {
-  const { account } = useWalletConnection();
-  const isOwner = account?.toLowerCase() === product.owner.toLowerCase();
-  
+const ProductDetail: React.FC<ProductDetailProps> = ({
+  product,
+  isOwner,
+  isLoading = false,
+  onPurchase,
+  purchaseInProgress = false
+}) => {
   return (
-    <Card className="overflow-hidden border-2 border-gray-200 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+    <Card className="w-full">
+      <CardHeader>
         <div className="flex justify-between items-start">
           <CardTitle className="text-2xl font-bold">{product.name}</CardTitle>
           {product.purchased && (
-            <Badge className="bg-white text-purple-700">Sold</Badge>
+            <Badge variant="secondary" className="bg-white text-purple-700">
+              Sold
+            </Badge>
           )}
         </div>
       </CardHeader>
-      <CardContent className="p-6">
-        <div className="grid gap-4">
-          <div>
-            <h3 className="text-sm font-medium text-gray-500">Description</h3>
-            <p className="mt-1 text-gray-900">{product.description}</p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-sm font-medium text-gray-500">Price</h3>
-              <p className="mt-1 text-2xl font-bold text-purple-700">{product.price} ETH</p>
-            </div>
-            
-            <div>
-              <h3 className="text-sm font-medium text-gray-500">Owner</h3>
-              <p className="mt-1 text-gray-900 break-all">
-                {isOwner ? (
-                  <span className="flex items-center gap-1">
-                    <Badge className="bg-green-50 text-green-700 border-green-200">You</Badge>
-                    {product.owner.substring(0, 10)}...
-                  </span>
-                ) : (
-                  <span>{product.owner.substring(0, 10)}...</span>
-                )}
-              </p>
-            </div>
-          </div>
+      <CardContent className="space-y-6">
+        <div>
+          <h3 className="text-lg font-medium">Description</h3>
+          <p className="mt-2 text-gray-600">{product.description}</p>
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-md">
           <div>
-            <h3 className="text-sm font-medium text-gray-500">Status</h3>
-            <p className="mt-1 text-gray-900">
-              {product.purchased 
-                ? "This item has been sold" 
-                : "This item is available for purchase"}
+            <h4 className="text-sm font-medium text-gray-500">Price</h4>
+            <p className="mt-1 text-xl font-semibold text-indigo-600">{product.price} ETH</p>
+          </div>
+          <div>
+            <h4 className="text-sm font-medium text-gray-500">Owner</h4>
+            <p className="mt-1 text-gray-900 break-all">
+              {isOwner ? (
+                <span className="flex items-center gap-1">
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                    You
+                  </Badge>
+                  {product.owner.substring(0, 10)}...
+                </span>
+              ) : (
+                `${product.owner.substring(0, 18)}...`
+              )}
             </p>
           </div>
         </div>
       </CardContent>
-      <CardFooter className="bg-gray-50 p-6">
-        <Button 
-          onClick={() => onPurchase(product.id)} 
-          disabled={!account || product.purchased || isOwner || loading}
-          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-          size="lg"
-        >
-          {loading ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Processing...
-            </span>
-          ) : !account ? (
-            "Connect wallet to purchase"
-          ) : product.purchased ? (
-            "Already purchased"
-          ) : isOwner ? (
-            "You own this item"
-          ) : (
-            "Buy Now"
-          )}
-        </Button>
+      <CardFooter className="flex justify-end">
+        {!product.purchased && !isOwner && (
+          <Button 
+            onClick={onPurchase} 
+            disabled={isLoading || purchaseInProgress}
+            className="bg-gradient-to-r from-indigo-600 to-purple-600"
+          >
+            {purchaseInProgress ? "Processing..." : "Buy Now"}
+          </Button>
+        )}
+        {isOwner && <Badge>You own this item</Badge>}
       </CardFooter>
     </Card>
   );
