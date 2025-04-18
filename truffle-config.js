@@ -5,6 +5,8 @@
  * compilation, and testing.
  */
 
+const path = require("path");
+
 module.exports = {
   networks: {
     development: {
