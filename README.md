@@ -1,5 +1,5 @@
 
-# Ethereum Marketplace DApp
+# Web3 Marketplace DApp
 
 A decentralized marketplace built on Ethereum that allows users to list items for sale and purchase them directly with cryptocurrency.
 
